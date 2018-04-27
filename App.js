@@ -5,9 +5,12 @@ import { Container, Spinner } from "native-base";
 import { JobList } from "views";
 import { jobSearch } from "lib/saramin";
 
+var parseString = require("xml2js").parseString;
+
 export default class App extends React.Component {
   state = {
-    loading: true
+    loading: true,
+    data: {}
   };
 
   async componentWillMount() {
@@ -18,10 +21,13 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    let json;
+
     jobSearch()
       .then(xml => {
-        // alert("Job Search success");
-        this.setState({ loading: false });
+        parseString(xml, (err, result) => {
+          this.setState({ loading: false, data: result });
+        });
       })
       .catch(error => {
         alert(error);
@@ -30,7 +36,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, data } = this.state;
 
     return (
       <Container>
@@ -39,7 +45,7 @@ export default class App extends React.Component {
             <Spinner style={styles.container} />
           </Container>
         ) : (
-          <JobList />
+          <JobList data={data} />
         )}
       </Container>
     );

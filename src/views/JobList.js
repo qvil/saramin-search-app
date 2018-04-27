@@ -3,23 +3,28 @@ import { StyleSheet, FlatList, Image } from "react-native";
 import { Container, Header, Content, List } from "native-base";
 import { JobListItem } from "components";
 
-export default class JobList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+export default (JobList = ({ data }) => {
+  const jobs = data["job-search"].jobs[0].job;
+  console.log(jobs);
 
-  render() {
-    return (
-      <Container>
-        <Header />
-        <Content>
-          <List>
-            <JobListItem />
-          </List>
-        </Content>
-      </Container>
-    );
-  }
-}
+  return (
+    <Container>
+      <Header />
+      <Content>
+        <List>
+          {jobs.map((job, index) => (
+            <JobListItem
+              key={job.id}
+              {...job}
+              // title={job.position[0].title}
+              // url={job.url}
+              // url={job.url}
+            />
+          ))}
+        </List>
+      </Content>
+    </Container>
+  );
+});
 
 const styles = StyleSheet.create({});
