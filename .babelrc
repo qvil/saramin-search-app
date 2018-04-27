@@ -4,5 +4,19 @@
     "development": {
       "plugins": ["transform-react-jsx-source"]
     }
-  }
+  },
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "src": "./src",
+          "components": "./src/components",
+          "lib": "./src/lib"
+        },
+        "extensions": [".js", ".ios.js", ".android.js"]
+      }
+    ]
+  ]
 }
