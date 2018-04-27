@@ -1,27 +1,47 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { MyComponent } from "components";
+import { StyleSheet } from "react-native";
+import { Container, Spinner } from "native-base";
+
+import { JobList } from "views";
 import { jobSearch } from "lib/saramin";
 
 export default class App extends React.Component {
   state = {
-    xml: null
+    loading: true
   };
+
+  async componentWillMount() {
+    await Expo.Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+    });
+  }
 
   componentDidMount() {
     jobSearch()
-      // .then(xml => this.setState({ xml }))
-      // .catch(error => this.setState({ xml: error }));
-      .then(xml => alert("Job Search success"))
-      .catch(error => alert(error));
+      .then(xml => {
+        // alert("Job Search success");
+        this.setState({ loading: false });
+      })
+      .catch(error => {
+        alert(error);
+        this.setState({ loading: false });
+      });
   }
 
   render() {
+    const { loading } = this.state;
+
     return (
-      <View style={styles.container}>
-        {this.state.xml}
-        <MyComponent />
-      </View>
+      <Container>
+        {loading ? (
+          <Container>
+            <Spinner style={styles.container} />
+          </Container>
+        ) : (
+          <JobList />
+        )}
+      </Container>
     );
   }
 }
@@ -29,8 +49,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

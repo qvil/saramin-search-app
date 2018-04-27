@@ -13,7 +13,8 @@
         "alias": {
           "src": "./src",
           "components": "./src/components",
-          "lib": "./src/lib"
+          "lib": "./src/lib",
+          "views": "./src/views"
         },
         "extensions": [".js", ".ios.js", ".android.js"]
       }
